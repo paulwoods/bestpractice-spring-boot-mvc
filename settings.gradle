@@ -1,0 +1,4 @@
+rootProject.name = 'bookmarks2'
+include "bookmarks2-web"
+include 'bookmarks2-core'
+
