@@ -1,33 +1,19 @@
 package org.mrpaulwoods.bookmarks2web
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.Test
-import org.junit.runner.RunWith
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.web.client.RequestCallback
+import org.springframework.http.*
 import spock.lang.Specification
-import org.springframework.http.MediaType
 
-
-@RunWith(SpringRunner)
+//@RunWith(SpringRunner)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TagIT extends Specification {
 
     @Autowired
     TestRestTemplate testRestTemplate
 
-    @Autowired
-    TagService tagService
-
-    @Test
     def "create a tag successfully returns CREATED and the tag"() {
 
         TagForm tagForm = new TagForm(name: "Alpha")
@@ -41,7 +27,6 @@ class TagIT extends Specification {
         re.body.name == "Alpha"
     }
 
-    @Test
     def "create a tag with a null body returns bad request"() {
 
         when:
@@ -51,7 +36,6 @@ class TagIT extends Specification {
         re.statusCode == HttpStatus.UNSUPPORTED_MEDIA_TYPE
     }
 
-    @Test
     def "create a tag with a null name returns bad request"() {
 
         TagForm tagForm = new TagForm(name: null)
@@ -63,7 +47,6 @@ class TagIT extends Specification {
         re.statusCode == HttpStatus.BAD_REQUEST
     }
 
-    @Test
     def "create a tag with a name > 100 chars returns bad request"() {
 
         TagForm tagForm = new TagForm(name: "a" * 101)
@@ -75,7 +58,6 @@ class TagIT extends Specification {
         re.statusCode == HttpStatus.BAD_REQUEST
     }
 
-    @Test
     def "read a tag by id"() {
         Tag bravo = create("Bravo")
 
@@ -88,16 +70,14 @@ class TagIT extends Specification {
         re.body.name == "Bravo"
     }
 
-    @Test
     def "read a tag by invalid id (not found) returns not found"() {
         when:
-        ResponseEntity<Object>  re = testRestTemplate.getForEntity("/tag/99999", Object)
+        ResponseEntity<Object> re = testRestTemplate.getForEntity("/tag/99999", Object)
 
         then:
         re.statusCode == HttpStatus.NOT_FOUND
     }
 
-    @Test
     def "read a tag by invalid id (not a number) returns bad request"() {
         when:
         ResponseEntity<Object> re = testRestTemplate.getForEntity("/tag/alpha", Object)
