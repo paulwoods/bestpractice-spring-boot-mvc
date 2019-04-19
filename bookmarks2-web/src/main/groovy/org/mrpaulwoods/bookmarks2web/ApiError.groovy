@@ -1,12 +1,12 @@
 package org.mrpaulwoods.bookmarks2web
 
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
 final class ApiError {
-    ZonedDateTime timestamp = ZonedDateTime.now()
+    OffsetDateTime timestamp = OffsetDateTime.now()
     String status
     String error
-    final List<Map> errors = []
     String message
+    final List<Map> errors = []
 
 }
